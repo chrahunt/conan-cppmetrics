@@ -3,9 +3,10 @@
 
 from conans import ConanFile, CMake, tools
 import os
+import shutil
 
 
-class LibnameConan(ConanFile):
+class CppmetricsConan(ConanFile):
     name = "cppmetrics"
     version = "0.1.1"
     description = "Keep it short"
@@ -30,11 +31,6 @@ class LibnameConan(ConanFile):
     # Custom attributes for Bincrafters recipe conventions
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
-
-    # Use version ranges for dependencies unless there's a reason not to
-    # Update 2/9/18 - Per conan team, ranges are slow to resolve.
-    # So, with libs like zlib, updates are very rare, so we now use static version
-
 
     requires = (
         "boost_asio/[>=1.53.0]@bincrafters/stable",
@@ -64,7 +60,7 @@ class LibnameConan(ConanFile):
         tools.get("{0}/archive/{1}.tar.gz".format(source_url, commit))
         extracted_dir = self.name + "-" + commit
 
-        #Rename to "source_subfolder" is a convention to simplify later steps
+        # Rename to "source_subfolder" is a convention to simplify later steps
         os.rename(extracted_dir, self.source_subfolder)
         # Overwrite existing CMakeLists.txt, it is not salvageable.
         os.remove(os.path.join(self.source_subfolder, 'CMakeLists.txt'))
